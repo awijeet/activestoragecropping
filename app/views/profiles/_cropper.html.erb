@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <%= image_tag (@profile.image.variant(resize: "470x470")), :id => "target" %> 
+</div>
+<%= simple_form_for @profile, :multipart => true, :remote => true  do |f| %>
+	<%= f.input :content_for, as: :hidden, input_html: {value: "cropping_avatar"} %>
+	<%= f.input :image_url, as: :hidden %>
+	<div style="text-align: center;">
+		<% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+			<%= f.text_field attribute  %>
+		<% end %>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	  <%= f.submit "Crop Image", :class => "btn btn-primary cropimage" %>
+	</div>
+<% end %>
+
+ <script type="text/javascript">
+    $(document).ready(function(){	
+    	$("#profile_image_url").val($("img#target").attr("src"));
+      const stage = Jcrop.attach('target',{
+		  shadeColor: 'gray',
+		  multi: false
+		});
+      stage.listen('crop.change',function(widget,e){
+		  const pos = widget.pos;
+		  $("#profile_crop_x").val(pos.x);
+		  $("#profile_crop_y").val(pos.y);
+		  $("#profile_crop_w").val(pos.w);
+		  $("#profile_crop_h").val(pos.h);
+		  // console.log(pos.x,pos.y,pos.w,pos.h);
+		});
+    });
+  </script>

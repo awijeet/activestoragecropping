@@ -1,0 +1,19 @@
+<% if @close_model %>
+	$("#exampleModal").modal("hide");
+	$(".img_targetx").html("Loading....");
+	// alert("<%= @profile.id %>");
+	upload_image("<%= @profile.id %>");
+<% else %>
+	$(".modal-content").html("");
+	$(".modal-content").html("<%= escape_javascript(render 'cropper')%>");
+	$(".modal-content").addClass( "crop");
+<% end %>
+function upload_image(profile_id){
+	$.get("/fetch_cropping_status", {profile_id: profile_id}, function(data){
+		if(data == true){
+			$.get("/fetch_image", {profile_id: profile_id})
+		}else{
+			upload_image(profile_id);
+		}
+	});
+}

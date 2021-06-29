@@ -1,0 +1,36 @@
+<%
+=begin %>
+<%= content_for "customcssjs" do %>
+  <link rel="stylesheet" href="/assets/jcrop.scss">
+  <script src="/assets/jcrop.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      Jcrop.attach('target');
+    });
+  </script>
+<% end %>
+<%
+=end %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @profile.name %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @profile.city %>
+</p>
+
+<% if @profile.image.attached? %>
+<p>
+  <strong>Image</strong>
+  <%= image_tag (@profile.image.variant(resize: "470x470")), :id => "target" %>
+</p>
+<% end %>
+<%= link_to 'Edit', edit_profile_path(@profile) %> |
+<%= link_to 'Back', profiles_path %>
+

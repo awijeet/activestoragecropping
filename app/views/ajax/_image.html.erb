@@ -1,0 +1,3 @@
+<% if @profile.image.attached? %>
+	<%= image_tag (@profile.image.variant(resize: "470x470")), :id => "targetx" %>
+<% end %>
